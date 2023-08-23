@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationRequest {
 
-    @Email(regexp = "^\\S+@\\S+\\.\\S+$", message = "Invalid email.")
+    @Email(regexp = "^[\\w\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Invalid email.")
     private String email;
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$" , message = "Your password must be at least 8 characters including letters, digits and special character (@,$,!,%,*,#,? and &).")
     String password;

@@ -71,4 +71,7 @@ public class AirWay {
     private List<ShipmentData> shipmentDetailsList;
     private List<SpecialServiceDetails> specialServices;
     private List<WeightAndDimensionDetails> weightAndDimensions;
+
+    private String shipmentTotalWeight;
+    private String shipmentTotalAmount;
 }
