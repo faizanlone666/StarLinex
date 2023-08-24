@@ -108,6 +108,8 @@ public class AirWayBillServiceImpl implements AirWayBillService {
             .descNote(airWay.getDescNote())
             .shipmentTotalAmount(airWay.getShipmentTotalAmount())
             .shipmentTotalWeight(airWay.getShipmentTotalWeight())
+            .shipperCountry(airWay.getShipperCountry())
+            .shipperCompany(airWay.getShipperCompany())
             .build();
             List<ShipmentData> shipmentDetailsList = airWay.getShipmentDetailsList();
             List<SpecialServiceDetails> specialServicesList = airWay.getSpecialServices();
@@ -257,6 +259,8 @@ public class AirWayBillServiceImpl implements AirWayBillService {
                         .descNote(airWay.getDescNote())
                         .shipmentTotalAmount(airWay.getShipmentTotalAmount())
                         .shipmentTotalWeight(airWay.getShipmentTotalWeight())
+                        .shipperCountry(airWay.getShipperCountry())
+                        .shipperCompany(airWay.getShipperCompany())
                         .specialServices(specialServiceDetails)
                         .shipmentDetailsList(shipmentData)
                         .weightAndDimensions(weightAndDimensionDetails)
