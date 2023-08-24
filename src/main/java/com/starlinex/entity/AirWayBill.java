@@ -73,4 +73,9 @@ public class AirWayBill {
     private String note;
     private String descNote;
 
+    private String shipmentTotalWeight;
+    private String shipmentTotalAmount;
+    private String shipperCountry;
+    private String shipperCompany;
+
 }
