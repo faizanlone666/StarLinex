@@ -64,6 +64,7 @@ public class AirWayBill {
     private String actualWeight;
     private String volumetricWeight;
     private String consignerWeight;
+    private String consignerAmount;
     private String chargeableWeight;
     private String parcelNo;
     private String chargeableEt;
