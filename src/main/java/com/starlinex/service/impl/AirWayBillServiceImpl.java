@@ -14,15 +14,20 @@ import com.starlinex.repository.ShipmentDetailsRepository;
 import com.starlinex.repository.SpecialServiceRepository;
 import com.starlinex.repository.WeightAndDimensionRepository;
 import com.starlinex.service.AirWayBillService;
+import com.starlinex.utils.ImageUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,21 +42,16 @@ public class AirWayBillServiceImpl implements AirWayBillService {
 
     @Transactional
     @Override
-    public String storeAirWayBillInfo(AirWay airWay) throws StarLinexException {
+    public String storeAirWayBillInfo(AirWay airWay) throws StarLinexException{
         try{
-            List<String> filePath = new ArrayList<>();
-//            File file = new File(path);
-//            if(!file.exists()){
-//                file.mkdir();
-//            }
-//            Arrays.stream(airWay.getShipperKycDoc()).forEach(doc->{
-//                filePath.add(path + "/" + doc.getOriginalFilename());
-//                try {
-//                    Files.copy(doc.getInputStream(), Paths.get(path + File.separator + doc.getOriginalFilename()));
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            });
+            List<byte[]> kycImg = new ArrayList<>();
+            Arrays.stream(airWay.getShipperKycDoc()).forEach(img->{
+                try {
+                    kycImg.add(ImageUtil.compressImage(img.getBytes()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             var airWayBill = AirWayBill.builder()
                     .userId(airWay.getUserId())
             .awbNbr(airWay.getAwbNbr())
@@ -78,7 +78,7 @@ public class AirWayBillServiceImpl implements AirWayBillService {
             .shipperEmailAddress(airWay.getShipperEmailAddress())
             .shipperKycType(airWay.getShipperKycType())
             .shipperKycNbr(airWay.getShipperKycNbr())
-            .shipperKycDoc(filePath)
+            .shipperKycDoc(kycImg.get(0))
 
             .receiverAddressBook(airWay.getReceiverAddressBook())
             .receiverCompany(airWay.getReceiverCompany())
@@ -205,6 +205,7 @@ public class AirWayBillServiceImpl implements AirWayBillService {
                 shipmentData.add(shipmentDetailsList);
             });
             airWayBills.forEach(airWay->{
+
                 var airWayBill = AirWay.builder()
                         .userId(airWay.getUserId())
                         .awbNbr(airWay.getAwbNbr())
@@ -231,7 +232,6 @@ public class AirWayBillServiceImpl implements AirWayBillService {
                         .shipperEmailAddress(airWay.getShipperEmailAddress())
                         .shipperKycType(airWay.getShipperKycType())
                         .shipperKycNbr(airWay.getShipperKycNbr())
-
                         .receiverAddressBook(airWay.getReceiverAddressBook())
                         .receiverCompany(airWay.getReceiverCompany())
                         .receiverPersonName(airWay.getReceiverPersonName())
@@ -276,5 +276,18 @@ public class AirWayBillServiceImpl implements AirWayBillService {
             throw new StarLinexException("Data not Found");
         }
         return airWays;
+    }
+
+    public byte[] downloadImage(Integer id) throws StarLinexException {
+        List<byte[]> shipperImg = new ArrayList<>();
+        List<AirWayBill> airWayBills = airWayBillRepository.findAllByUserId(id);
+        airWayBills.forEach(img->{
+            shipperImg.add(ImageUtil.decompressImage(img.getShipperKycDoc()));
+        });
+        if(!CollectionUtils.isEmpty(shipperImg)){
+            return shipperImg.get(0);
+        }else{
+            throw new StarLinexException("Image not found");
+        }
     }
 }

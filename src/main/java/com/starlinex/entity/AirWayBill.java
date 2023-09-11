@@ -44,7 +44,7 @@ public class AirWayBill {
     private String shipperEmailAddress;
     private String shipperKycType;
     private String shipperKycNbr;
-    private List<String> shipperKycDoc;
+    private byte[] shipperKycDoc;
 
     private String receiverAddressBook;
     private String receiverCompany;

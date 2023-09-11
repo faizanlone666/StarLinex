@@ -77,4 +77,5 @@ public class AirWay {
     private String shipmentTotalAmount;
     private String shipperCountry;
     private String shipperCompany;
+    private byte[] shipperDoc;
 }
