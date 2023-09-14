@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialServiceDetails {
-    private Integer userId;
+    private String awbNbr;
     private String specialServiceName;
     private String specialServicePcs;
 }

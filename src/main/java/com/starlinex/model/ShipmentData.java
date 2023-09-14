@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShipmentData {
-    private Integer userId;
+    private String awbNbr;
     private String shipmentBoxNo;
     private String shipmentDescription;
     private String shipmentHsCode;

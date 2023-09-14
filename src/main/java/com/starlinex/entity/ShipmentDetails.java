@@ -18,8 +18,7 @@ public class ShipmentDetails {
     @Id
     @GeneratedValue
     private Integer id;
-    private Integer userId;
-
+    private String awbNbr;
     private String shipmentBoxNo;
     private String shipmentDescription;
     private String shipmentHsCode;

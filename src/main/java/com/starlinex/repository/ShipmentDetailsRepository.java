@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ShipmentDetailsRepository extends JpaRepository<ShipmentDetails, Integer> {
-    List<ShipmentDetails> findAllByUserId(Integer id);
+    List<ShipmentDetails> findAllByAwbNbr(String id);
 
 }

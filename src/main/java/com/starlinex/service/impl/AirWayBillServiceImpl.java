@@ -117,7 +117,7 @@ public class AirWayBillServiceImpl implements AirWayBillService {
             List<WeightAndDimensionDetails> weightAndDimensionsList = airWay.getWeightAndDimensions();
             shipmentDetailsList.forEach(list->{
                 var shipmentDetails = ShipmentDetails.builder()
-                        .userId(airWay.getUserId())
+                        .awbNbr(airWay.getAwbNbr())
                         .shipmentBoxNo(list.getShipmentBoxNo())
                         .shipmentDescription(list.getShipmentDescription())
                         .shipmentAmount(list.getShipmentAmount())
@@ -132,7 +132,7 @@ public class AirWayBillServiceImpl implements AirWayBillService {
             });
             specialServicesList.forEach(details->{
                 var specialService = SpecialService.builder()
-                        .userId(airWay.getUserId())
+                        .awbNbr(airWay.getAwbNbr())
                         .specialServiceName(details.getSpecialServiceName())
                         .specialServicePcs(details.getSpecialServicePcs())
                         .build();
@@ -140,7 +140,7 @@ public class AirWayBillServiceImpl implements AirWayBillService {
             });
             weightAndDimensionsList.forEach(list->{
                 var weightAndDimension = WeightAndDimensions.builder()
-                        .userId(airWay.getUserId())
+                        .awbNbr(airWay.getAwbNbr())
                         .boxNo(list.getBoxNo())
                         .actualWt(list.getActualWt())
                         .lcm(list.getLcm())
@@ -162,50 +162,49 @@ public class AirWayBillServiceImpl implements AirWayBillService {
     public List<AirWay> getDataById(Integer id) throws StarLinexException{
         List<AirWay> airWays = new ArrayList<>();
         List<AirWayBill> airWayBills;
-        List<SpecialService> specialServices;
-        List<WeightAndDimensions> weightAndDimensions;
-        List<ShipmentDetails> shipmentDetails;
         try{
             airWayBills = airWayBillRepository.findAllByUserId(id);
-            specialServices = specialServiceRepository.findAllByUserId(id);
-            weightAndDimensions = weightAndDimensionRepository.findAllByUserId(id);
-            shipmentDetails = shipmentDetailsRepository.findAllByUserId(id);
-            List<SpecialServiceDetails> specialServiceDetails = new ArrayList<>();
-            specialServices.forEach(details->{
-                var specialService = SpecialServiceDetails.builder()
-                        .specialServiceName(details.getSpecialServiceName())
-                        .specialServicePcs(details.getSpecialServicePcs())
-                        .build();
-                specialServiceDetails.add(specialService);
-            });
-            List<WeightAndDimensionDetails> weightAndDimensionDetails = new ArrayList<>();
-            weightAndDimensions.forEach(list->{
-                var weightAndDimension = WeightAndDimensionDetails.builder()
-                        .actualWt(list.getActualWt())
-                        .lcm(list.getLcm())
-                        .bcm(list.getBcm())
-                        .hcm(list.getHcm())
-                        .volumetricWt(list.getVolumetricWt())
-                        .build();
-                weightAndDimensionDetails.add(weightAndDimension);
-            });
-            List<ShipmentData> shipmentData = new ArrayList<>();
-            shipmentDetails.forEach(list->{
-                var shipmentDetailsList = ShipmentData.builder()
-                        .shipmentBoxNo(list.getShipmentBoxNo())
-                        .shipmentDescription(list.getShipmentDescription())
-                        .shipmentAmount(list.getShipmentAmount())
-                        .shipmentIgst(list.getShipmentIgst())
-                        .shipmentHsCode(list.getShipmentHsCode())
-                        .shipmentUnityType(list.getShipmentUnityType())
-                        .shipmentUnitWeight(list.getShipmentUnitWeight())
-                        .shipmentUnitRates(list.getShipmentUnitRates())
-                        .shipmentQuantity(list.getShipmentQuantity())
-                        .build();
-                shipmentData.add(shipmentDetailsList);
-            });
             airWayBills.forEach(airWay->{
-
+                List<SpecialService> specialServices = specialServiceRepository.findAllByAwbNbr(airWay.getAwbNbr());
+                List<WeightAndDimensions> weightAndDimensions = weightAndDimensionRepository.findAllByAwbNbr(airWay.getAwbNbr());
+                List<ShipmentDetails> shipmentDetails = shipmentDetailsRepository.findAllByAwbNbr(airWay.getAwbNbr());
+                List<SpecialServiceDetails> specialServiceDetails = new ArrayList<>();
+                specialServices.forEach(details->{
+                    var specialService = SpecialServiceDetails.builder()
+                            .awbNbr(airWay.getAwbNbr())
+                            .specialServiceName(details.getSpecialServiceName())
+                            .specialServicePcs(details.getSpecialServicePcs())
+                            .build();
+                    specialServiceDetails.add(specialService);
+                });
+                List<WeightAndDimensionDetails> weightAndDimensionDetails = new ArrayList<>();
+                weightAndDimensions.forEach(list->{
+                    var weightAndDimension = WeightAndDimensionDetails.builder()
+                            .awbNbr(airWay.getAwbNbr())
+                            .actualWt(list.getActualWt())
+                            .lcm(list.getLcm())
+                            .bcm(list.getBcm())
+                            .hcm(list.getHcm())
+                            .volumetricWt(list.getVolumetricWt())
+                            .build();
+                    weightAndDimensionDetails.add(weightAndDimension);
+                });
+                List<ShipmentData> shipmentData = new ArrayList<>();
+                shipmentDetails.forEach(list->{
+                    var shipmentDetailsList = ShipmentData.builder()
+                            .awbNbr(airWay.getAwbNbr())
+                            .shipmentBoxNo(list.getShipmentBoxNo())
+                            .shipmentDescription(list.getShipmentDescription())
+                            .shipmentAmount(list.getShipmentAmount())
+                            .shipmentIgst(list.getShipmentIgst())
+                            .shipmentHsCode(list.getShipmentHsCode())
+                            .shipmentUnityType(list.getShipmentUnityType())
+                            .shipmentUnitWeight(list.getShipmentUnitWeight())
+                            .shipmentUnitRates(list.getShipmentUnitRates())
+                            .shipmentQuantity(list.getShipmentQuantity())
+                            .build();
+                    shipmentData.add(shipmentDetailsList);
+                });
                 var airWayBill = AirWay.builder()
                         .userId(airWay.getUserId())
                         .awbNbr(airWay.getAwbNbr())

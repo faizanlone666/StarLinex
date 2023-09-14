@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SpecialServiceRepository extends JpaRepository<SpecialService,Integer> {
-    List<SpecialService> findAllByUserId(Integer id);
+    List<SpecialService> findAllByAwbNbr(String id);
 }

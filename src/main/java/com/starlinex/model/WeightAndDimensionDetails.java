@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeightAndDimensionDetails {
-    private Integer userId;
-
+    private String awbNbr;
     private String boxNo;
     private String actualWt;
     private String lcm;
